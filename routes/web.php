@@ -33,3 +33,7 @@ Route::view('/game', 'game.show')->name('game.show');
 
 //     return 'Game execution has started';
 // });
+
+
+Route::get('/chat','ChatController@showChat')->name('chat.show');
+Route::post('/chat/message', 'ChatController@messageReceived')->name('chat.message');
