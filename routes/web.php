@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,3 +23,13 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::view('users', 'users.showAll')->name('users.all');
+
+Route::view('/game', 'game.show')->name('game.show');
+
+// Route::get('start', function () {
+//     Artisan::call('game:execute');
+
+//     // sleep(30);
+
+//     return 'Game execution has started';
+// });
