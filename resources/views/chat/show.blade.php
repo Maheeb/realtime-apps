@@ -3,23 +3,9 @@
 @push('styles')
 
     <style type="text/css">
-        /* @keyframes rotate {
-                        from {
-
-                            transform: rotate(0deg)
-                        }
-
-                        to {
-
-                            transform: rotate(360deg)
-                        }
-
-                    }
-
-                    .refresh {
-
-                        animation: rotate 1.5s linear infinite;
-                    } */
+        #users>li {
+            cursor: pointer;
+        }
 
     </style>
 @endpush
@@ -41,8 +27,8 @@
                                     <div class="col-12 border rounded-lg p-3">
 
                                         <ul id="messages" class="list-unstyled overflow-auto" style="height: 45vh">
-                                            <li>Test1: hello</li>
-                                            <li>Test2: Hi there</li>
+                                            {{-- <li>Test1: hello</li>
+                                            <li>Test2: Hi there</li> --}}
                                         </ul>
                                     </div>
                                 </div>
@@ -90,6 +76,7 @@
                 users.forEach((user, index) => {
                     let element = document.createElement('li');
                     element.setAttribute('id', user.id);
+                    element.setAttribute('onclick', 'greetUser("' + user.id + '") ');
                     element.innerText = user.name;
                     userElement.appendChild(element);
                 });
@@ -98,6 +85,7 @@
 
                 let element = document.createElement('li');
                 element.setAttribute('id', user.id);
+                element.setAttribute('onclick', 'greetUser("' + user.id + '") ');
                 element.innerText = user.name;
                 userElement.appendChild(element);
             })
@@ -107,9 +95,9 @@
                 element.parentNode.removeChild(element);
 
             })
-            .listen('MessageSent',(e)=>{
+            .listen('MessageSent', (e) => {
                 let element = document.createElement('li');
-                element.innerText = e.user.name +':'+ e.message;
+                element.innerText = e.user.name + ':' + e.message;
 
                 messageElement.appendChild(element);
 
@@ -132,9 +120,31 @@
 
             })
 
-            msgElement.value='';
+            msgElement.value = '';
         });
 
     </script>
 
+
+    <script>
+        function greetUser(id) {
+            window.axios.post('/chat/greet/' + id);
+
+        }
+
+    </script>
+
+    <script>
+        Echo.private('chat.greet.{{ auth()->user()->id }}')
+            .listen('GreetingSent',(e)=>{
+
+                let element = document.createElement('li');
+                element.innerText = e.message;
+
+                element.classList.add('text-success');
+                messageElement.appendChild(element);
+            })
+
+
+    </script>
 @endpush
